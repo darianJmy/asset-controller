@@ -181,7 +181,7 @@ export const constantRoutes = [
         path: 'index',
         name: 'Physical',
         component: () => import('@/views/physical/index'),
-        meta: { title: 'Physical', icon: 'monitor' }
+        meta: { title: '物理服务器', icon: 'table' }
       }
     ]
   },
