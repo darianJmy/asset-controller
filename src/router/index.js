@@ -6,6 +6,7 @@ Vue.use(Router)
 /* Layout */
 import Layout from '@/layout'
 
+
 /**
  * Note: sub-menu only appear when route children.length >= 1
  * Detail see: https://panjiachen.github.io/vue-element-admin-site/guide/essentials/router-and-nav.html
@@ -36,6 +37,18 @@ export const constantRoutes = [
     component: () => import('@/views/login/index'),
     hidden: true
   },
+  // {
+  //   path: '/tab',
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       component: () => import('@/views/tab/index'),
+  //       name: 'Tab',
+  //       meta: { title: 'Tab', icon: 'tab' }
+  //     }
+  //   ]
+  // },
 
   {
     path: '/404',
@@ -51,7 +64,7 @@ export const constantRoutes = [
       path: 'dashboard',
       name: 'Dashboard',
       component: () => import('@/views/dashboard/index'),
-      meta: { title: 'Dashboard', icon: 'dashboard' }
+      meta: { title: 'Dashboard', icon: 'dashboard', affix: true }
     }]
   },
 
@@ -172,7 +185,6 @@ export const constantRoutes = [
       }
     ]
   },
-
   {
     path: '/physical',
     component: Layout,
@@ -182,6 +194,31 @@ export const constantRoutes = [
         name: 'Physical',
         component: () => import('@/views/physical/index'),
         meta: { title: '物理服务器', icon: 'table' }
+      }
+    ]
+  },
+  {
+    path: '/host',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: 'Host',
+        component: () => import('@/views/host/index'),
+        meta: { title: '物理服务器', icon: 'host' }
+      }
+    ]
+  },
+  {
+    path: '/details',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: 'Details',
+        component: () => import('@/views/details/index'),
+        meta: { title: 'Details', icon: 'host' }
+
       }
     ]
   },

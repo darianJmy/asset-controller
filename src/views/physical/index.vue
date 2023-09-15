@@ -18,7 +18,7 @@
 
       <!-- 更多功能 -->
       <el-button style="margin-left: 10px" type="primary">
-        <el-dropdown>
+        <el-dropdown trigger="click">
           <div>
             <span style="color: white;">
               更多操作
@@ -61,7 +61,7 @@
       <el-table-column align="center" label="带外IP" width="200">
         <template slot-scope="scope">
           <el-tooltip effect="dark" content="点击查看主机详细信息" placement="top">
-            <span @click="table = true" style="color: #409eff;">
+            <span @click="goToOtherPage" style="color: #409eff;">
               {{ scope.row.ipmi_host }}
             </span>
           </el-tooltip>
@@ -141,14 +141,6 @@
 
     </el-dialog>
 
-    <el-drawer title="主机详细信息" :visible.sync="table" direction="rtl" size="50%">
-      <span>Host: </span>
-      <span>序列号: </span>
-      <span>厂商: </span>
-      <span>型号: </span>
-      <span>CPU: </span>
-    </el-drawer>
-
 
   </div>
 </template>
@@ -174,7 +166,6 @@ export default {
       multipleSelection: [],
       deleteDialogVisible: false,
       dialogFormVisible: false,
-      table: false,
     }
   },
   created() {
@@ -232,6 +223,9 @@ export default {
     getSortClass: function (key) {
       const sort = this.listQuery.sort
       return sort === `+${key}` ? 'ascending' : 'descending'
+    },
+    goToOtherPage() {
+      this.$router.push('/details/index')
     }
   }
 }
