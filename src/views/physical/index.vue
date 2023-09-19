@@ -1,43 +1,38 @@
 <template>
-  <div class="app-container">
+  <div class="app-container" style="background-color: #f3f3f4;">
     <!-- 头部功能 -->
-    <div style="margin-top: 20px; margin-bottom: 20px;">
+    <div style="margin-bottom: 10px;">
       <!-- 刷新 -->
-      <el-button type="primary" icon="el-icon-refresh" @click="handleFilter"></el-button>
+      <el-button size="small" type="primary" icon="el-icon-refresh" @click="handleFilter" />
 
       <!-- 新建数据 -->
-      <el-button type="primary">新建设备</el-button>
+      <el-button size="small" type="primary" @click="goToCreatePhysicalPage">新建设备</el-button>
 
-      <el-button class="filter-item" type="primary" icon="el-icon-upload2">
-        导入
-      </el-button>
+      <!-- 导入 -->
+      <el-button size="small" type="primary" icon="el-icon-upload2">导入</el-button>
 
-      <el-button class="filter-item" type="primary" icon="el-icon-download">
-        导出
-      </el-button>
+      <!-- 导出 -->
+      <el-button size="small" type="primary" icon="el-icon-download">导出</el-button>
 
       <!-- 更多功能 -->
-      <el-button style="margin-left: 10px" type="primary">
-        <el-dropdown trigger="click">
-          <div>
-            <span style="color: white;">
-              更多操作
-              <i class="el-icon-arrow-down el-icon--right"></i>
-            </span>
-          </div>
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item :disabled="isItemDisabled">批量编辑</el-dropdown-item>
-            <el-dropdown-item :disabled="isItemDisabled">批量删除</el-dropdown-item>
-            <el-dropdown-item :disabled="isItemDisabled">批量采集</el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
-      </el-button>
+      <el-dropdown trigger="click">
+        <el-button size="small" type="primary" style="margin-left: 10px;">
+          <span>更多操作</span>
+          <i class="el-icon-arrow-down el-icon--right"></i>
+        </el-button>
+
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item :disabled="isItemDisabled">批量编辑</el-dropdown-item>
+          <el-dropdown-item :disabled="isItemDisabled">批量删除</el-dropdown-item>
+          <el-dropdown-item :disabled="isItemDisabled">批量采集</el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
 
       <!-- 搜索 -->
-      <el-input v-model="listQuery.host" placeholder="please input host"
+      <el-input size="small" v-model="listQuery.host" placeholder="please input host"
         style="position: absolute;right:40px;width: 320px;" @keyup.enter.native="handleFilter">
         <template #append>
-          <el-button class="custom-button" type="primary" icon="el-icon-search" @click="handleFilter">
+          <el-button size="small" class="custom-button" type="primary" icon="el-icon-search" @click="handleFilter">
             搜索
           </el-button>
         </template>
@@ -46,7 +41,7 @@
 
     <!-- Table 表格 -->
     <el-table v-loading="listLoading" :data="tableData" style="width: 100%" @selection-change="handleSelectionChange"
-      border @sort-change="sortChange">
+      @sort-change="sortChange">
       <el-table-column type="selection"></el-table-column>
       <el-table-column label="ID" align="center" width="60">
         <template slot-scope="scope">
@@ -226,6 +221,9 @@ export default {
     },
     goToOtherPage() {
       this.$router.push('/details/index')
+    },
+    goToCreatePhysicalPage() {
+      this.$router.push('/physical/create')
     }
   }
 }

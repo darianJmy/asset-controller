@@ -174,13 +174,43 @@ export const constantRoutes = [
   {
     path: '/physical',
     component: Layout,
+    redirect: '/physical/list',
+    name: 'Physical',
+    meta: {
+      title: '物理服务器',
+      icon: 'host'
+    },
     children: [
       {
-        path: 'index',
-        name: 'Physical',
+        path: 'create',
+        component: () => import('@/views/createPhysical/index'),
+        name: 'Create',
+        meta: { title: '新建设备' }
+      },
+      {
+        path: 'list',
         component: () => import('@/views/physical/index'),
-        meta: { title: '物理服务器', icon: 'table' }
+        name: 'List',
+        meta: { title: '服务器列表' },
       }
+    ]
+  },
+  {
+    path: '/excel',
+    component: Layout,
+    redirect: '/excel/idc',
+    name: 'Physical',
+    meta: {
+      title: '生成表格',
+      icon: 'host'
+    },
+    children: [
+      {
+        path: 'idc',
+        component: () => import('@/views/excel/index'),
+        name: 'IDC',
+        meta: { title: 'IDC' }
+      },
     ]
   },
   {
