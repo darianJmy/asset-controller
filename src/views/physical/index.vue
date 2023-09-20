@@ -12,7 +12,8 @@
       <el-button size="small" type="primary" icon="el-icon-upload2">导入</el-button>
 
       <!-- 导出 -->
-      <el-button size="small" type="primary" icon="el-icon-download">导出</el-button>
+      <el-button size="small" type="primary" icon="el-icon-download" :loading="downloadLoading"
+        @click="handleDownload">导出</el-button>
 
       <!-- 更多功能 -->
       <el-dropdown trigger="click">
@@ -161,6 +162,10 @@ export default {
       multipleSelection: [],
       deleteDialogVisible: false,
       dialogFormVisible: false,
+      downloadLoading: false,
+      filename: '',
+      autoWidth: true,
+      bookType: 'xlsx'
     }
   },
   created() {
@@ -224,6 +229,32 @@ export default {
     },
     goToCreatePhysicalPage() {
       this.$router.push('/physical/create')
+    },
+    handleDownload() {
+      this.downloadLoading = true
+      import('@/vendor/Export2Excel').then(excel => {
+        const tHeader = ['SerialNumber', 'IPMIHost']
+        const filterVal = ['serial_number', 'ipmi_host']
+        const list = this.tableData
+        const data = this.formatJson(filterVal, list)
+        excel.export_json_to_excel({
+          header: tHeader,
+          data,
+          filename: this.filename,
+          autoWidth: this.autoWidth,
+          bookType: this.bookType
+        })
+        this.downloadLoading = false
+      })
+    },
+    formatJson(filterVal, jsonData) {
+      return jsonData.map(v => filterVal.map(j => {
+        if (j === 'timestamp') {
+          return parseTime(v[j])
+        } else {
+          return v[j]
+        }
+      }))
     }
   }
 }
