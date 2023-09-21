@@ -1,23 +1,51 @@
 <template>
   <div class="app-container">
     <el-form ref="form" :model="ruleForm" :rules="formRules" label-width="65px">
-      <el-form-item label="主机IP" prop="host">
-        <el-input v-model="ruleForm.host" style="width: 320px;"></el-input>
-      </el-form-item>
-      <el-form-item label="用户名" prop="username">
-        <el-input v-model="ruleForm.username" style="width: 320px;"></el-input>
-      </el-form-item>
-      <el-form-item label="密码" prop="password">
-        <el-input v-model="ruleForm.password" :type="passwordVisible ? 'text' : 'password'" style="width: 320px;">
-          <template slot="suffix">
-            <i :class="passwordVisible ? 'el-icon-minus' : 'el-icon-view'" @click="togglePasswordVisibility"></i>
-          </template>
-        </el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="validateAndSubmit">添加</el-button>
-        <el-button @click="clearForm">取消</el-button>
-      </el-form-item>
+      <el-row :gutter="20">
+        <el-col :span="3">
+          <el-form-item label="主机IP" prop="host">
+            <el-input v-model="ruleForm.host" style="width: 100%;"></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="3">
+          <el-form-item label="用户名" prop="username">
+            <el-input v-model="ruleForm.username" style="width: 100%;"></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="3">
+          <el-form-item label="密码" prop="password">
+            <el-input v-model="ruleForm.password" :type="passwordVisible ? 'text' : 'password'" style="width: 100%;">
+              <template slot="suffix">
+                <i :class="passwordVisible ? 'el-icon-minus' : 'el-icon-view'" @click="togglePasswordVisibility"></i>
+              </template>
+            </el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="3">
+          <el-form-item label="厂商" prop="selectOption">
+            <el-select v-model="ruleForm.selectOption" placeholder="请选择" style="width: 100%;">
+              <el-option label="烽火" value="option1"></el-option>
+              <el-option label="联想" value="option2"></el-option>
+              <!-- 添加更多选项 -->
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="3">
+          <el-form-item label="品牌" prop="selectOption">
+            <el-select v-model="ruleForm.selectOption" placeholder="请选择" style="width: 100%;">
+              <el-option label="R2280 V5" value="option1"></el-option>
+              <el-option label="选项2" value="option2"></el-option>
+              <!-- 添加更多选项 -->
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="8">
+          <el-form-item>
+            <el-button type="primary" @click="validateAndSubmit">添加</el-button>
+            <el-button @click="clearForm">重置</el-button>
+          </el-form-item>
+        </el-col>
+      </el-row>
     </el-form>
 
     <el-table :data="tableData" style="width: 100%; margin: 0 auto; text-align: center;">
@@ -60,14 +88,14 @@ export default {
       },
       formRules: {
         host: [
-          { required: true, message: '请输入活动名称', trigger: 'blur' },
+          { required: true, message: '请输入主机IP', trigger: 'blur' },
           { validator: this.validateIPAddress, trigger: 'blur' }
         ],
         username: [
-          { required: true, message: '请输入活动名称', trigger: 'blur' },
+          { required: true, message: '请输入用户名', trigger: 'blur' },
         ],
         password: [
-          { required: true, message: '请输入活动名称', trigger: 'blur' },
+          { required: true, message: '请输入密码', trigger: 'blur' },
         ],
 
       },
@@ -109,6 +137,14 @@ export default {
       if (index !== -1) {
         data.splice(index, 1);
       }
+    },
+  },
+  computed: {
+    iconRefresh() {
+      return 'el-icon-refresh';
+    },
+    buttonTextRefresh() {
+      return '刷新';
     },
   }
 }
