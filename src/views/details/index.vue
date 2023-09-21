@@ -1,63 +1,44 @@
 <template>
-  <div>
-    <el-upload class="upload-demo" drag action="#" :on-success="handleUploadSuccess" :before-upload="beforeUpload">
-      <i class="el-icon-upload"></i>
-      <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-      <div class="el-upload__tip" slot="tip">只能上传xlsx文件</div>
-    </el-upload>
-
-    <!-- 表格组件 -->
-    <el-table :data="tableData" v-if="tableData.length > 0">
-      <!-- 表格列定义 -->
-      <!-- 例如： -->
-      <el-table-column prop="name" label="姓名"></el-table-column>
-      <el-table-column prop="age" label="年龄"></el-table-column>
-      <!-- 其他表格列 -->
-    </el-table>
+  <div class="app-container">
+    <el-descriptions title="详细信息" direction="vertical" :column="7" border>
+      <el-descriptions-item label="带外IP">kooriookami</el-descriptions-item>
+      <el-descriptions-item label="资产编号">18100000000</el-descriptions-item>
+      <el-descriptions-item label="CPU数量" :span="5">苏州市</el-descriptions-item>
+      <el-descriptions-item label="CPU内核">
+        <el-tag size="small">学校</el-tag>
+      </el-descriptions-item>
+      <el-descriptions-item label="内存数量"></el-descriptions-item>
+      <el-descriptions-item label="内存总容量"></el-descriptions-item>
+      <el-descriptions-item label="硬盘容量"></el-descriptions-item>
+      <el-descriptions-item label="硬盘数量"></el-descriptions-item>
+      <el-descriptions-item label="风扇数量"></el-descriptions-item>
+      <el-descriptions-item label="联系地址" :span="3"></el-descriptions-item>
+      <el-descriptions-item label="电源数量"></el-descriptions-item>
+      <el-descriptions-item label="电源瓦数"></el-descriptions-item>
+      <el-descriptions-item label="是否持续采集" :span="4"></el-descriptions-item>
+      <el-descriptions-item label="采集状态"></el-descriptions-item>
+      <el-descriptions-item label="UUID"></el-descriptions-item>
+      <el-descriptions-item label="序列号" :span="2"></el-descriptions-item>
+      <el-descriptions-item label="主机名"></el-descriptions-item>
+    </el-descriptions>
   </div>
 </template>
 
-<script>
-import XLSX from 'xlsx'; // 引入解析Excel的库
 
+<script>
 export default {
   data() {
     return {
-      tableData: [] // 存放解析后的数据
-    };
+      size: ''
+    }
   },
   methods: {
-    beforeUpload(file) {
-      // 判断上传的文件类型是否是xlsx
-      const isXLSX = file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
-      if (!isXLSX) {
-        this.$message.error('只能上传xlsx文件');
-        return false;
-      }
+    goBack() {
+      console.log('go back');
     },
-    handleUploadSuccess(response, file) {
-      const reader = new FileReader();
-
-      // 读取上传的Excel文件
-      reader.onload = e => {
-        const data = new Uint8Array(e.target.result);
-
-        // 解析Excel文件
-        const workbook = XLSX.read(data, { type: 'array' });
-
-        // 获取第一个工作表
-        const sheet = workbook.Sheets[workbook.SheetNames[0]];
-
-        // 将工作表数据转换为JSON
-        const jsonData = XLSX.utils.sheet_to_json(sheet);
-
-        // 更新表格数据
-        this.tableData = jsonData;
-      };
-
-      // 读取文件内容
-      reader.readAsArrayBuffer(file.raw);
+    onSubmit() {
+      console.log('submit!');
     }
   }
-};
+}
 </script>
