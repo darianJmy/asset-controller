@@ -24,6 +24,8 @@
         <el-dropdown-item :disabled="isItemDisabled">批量编辑</el-dropdown-item>
         <el-dropdown-item :disabled="isItemDisabled" command="batchDelete">批量删除</el-dropdown-item>
         <el-dropdown-item :disabled="isItemDisabled">批量采集</el-dropdown-item>
+        <el-dropdown-item :disabled="isItemDisabled">同步到优维</el-dropdown-item>
+        <el-dropdown-item :disabled="isItemDisabled">批量修改用户名密码</el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
 
