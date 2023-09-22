@@ -174,7 +174,7 @@ export const constantRoutes = [
   {
     path: '/physical',
     component: Layout,
-    redirect: '/physical/list',
+    redirect: '/physical/table',
     name: 'Physical',
     meta: {
       title: '物理服务器',
@@ -183,63 +183,26 @@ export const constantRoutes = [
     children: [
       {
         path: 'create',
-        component: () => import('@/views/createPhysical/index'),
+        component: () => import('@/views/physical/createAsset/index'),
         name: 'Create',
-        meta: { title: '新建设备' }
+        hidden: true,
+        meta: { title: '新增资产' }
       },
       {
-        path: 'list',
-        component: () => import('@/views/physical/index'),
-        name: 'List',
-        meta: { title: '服务器列表' },
-      }
-    ]
-  },
-  {
-    path: '/excel',
-    component: Layout,
-    redirect: '/excel/idc',
-    name: 'Physical',
-    meta: {
-      title: '生成表格',
-      icon: 'host'
-    },
-    children: [
-      {
-        path: 'idc',
-        component: () => import('@/views/excel/index'),
-        name: 'IDC',
-        meta: { title: 'IDC' }
-      },
-    ]
-  },
-  {
-    path: '/host',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        name: 'Host',
-        component: () => import('@/views/host/index'),
-        meta: { title: '物理服务器', icon: 'host' }
-      }
-    ]
-  },
-  {
-    path: '/details',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        name: 'Details',
+        path: 'detail',
         component: () => import('@/views/details/index'),
-        meta: { title: 'Details', icon: 'host' }
-
+        name: 'Details',
+        hidden: true,
+        meta: { title: '详细信息' }
+      },
+      {
+        path: 'table',
+        component: () => import('@/views/physical/assetTable/index'),
+        name: 'Table',
+        meta: { title: '服务器资产', icon: 'nested' },
       }
     ]
   },
-
-
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
 ]

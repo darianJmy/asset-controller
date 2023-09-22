@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container">
+  <div class="app-container" style="margin-top: 20px;">
     <el-form ref="form" :model="ruleForm" :rules="formRules" label-width="65px">
       <el-row :gutter="20">
         <el-col :span="3">
@@ -39,10 +39,17 @@
             </el-select>
           </el-form-item>
         </el-col>
-        <el-col :span="8">
+        <el-col :span="3">
+          <el-form-item>
+            <el-switch v-model="value1" active-text="循环采集" inactive-text="单次采集">
+            </el-switch>
+          </el-form-item>
+        </el-col>
+        <el-col :span="4">
           <el-form-item>
             <el-button type="primary" @click="validateAndSubmit">添加</el-button>
             <el-button @click="clearForm">重置</el-button>
+            <el-button @click="addAsset">确定</el-button>
           </el-form-item>
         </el-col>
       </el-row>
@@ -78,9 +85,17 @@
 
 
 <script>
+import { createPhysicalList } from '@/api/physical'
 export default {
   data() {
     return {
+      value1: true,
+      value2: true,
+      createAsset: {
+        host_ip: '192.168.3.1',
+        username: 'admin',
+        password: 'admin'
+      },
       ruleForm: {
         host: '',
         username: '',
@@ -97,7 +112,6 @@ export default {
         password: [
           { required: true, message: '请输入密码', trigger: 'blur' },
         ],
-
       },
       tableData: [],
       passwordVisible: false,
@@ -137,6 +151,15 @@ export default {
       if (index !== -1) {
         data.splice(index, 1);
       }
+    },
+    addAsset() {
+      this.listLoading = true
+      createPhysicalList(this.createAsset).then(response => {
+        this.data = response.data
+        setTimeout(() => {
+          this.listLoading = false
+        }, 1.5 * 1000)
+      })
     },
   },
   computed: {

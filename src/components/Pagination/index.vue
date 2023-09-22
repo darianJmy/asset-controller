@@ -1,7 +1,7 @@
 <template>
-  <div :class="{ 'hidden': hidden }" class="pagination-container">
+  <div :class="{ 'hidden': hidden }" class="pagination-container" style="display: flex; justify-content: flex-end;">
     <el-pagination :background="background" :current-page.sync="currentPage" :page-size.sync="pageSize" :layout="layout"
-      :page-sizes="pageSizes" :total="total" v-bind="$attrs" @size-change="handleSizeChange"
+      :page-sizes="pageSizes" v-bind="$attrs" :total="total" @size-change="handleSizeChange"
       @current-change="handleCurrentChange" />
   </div>
 </template>
@@ -27,7 +27,7 @@ export default {
     pageSizes: {
       type: Array,
       default() {
-        return [10, 20, 30, 50, 100, 500, 3000]
+        return [20, 50, 100, 300, 1000]
       }
     },
     layout: {

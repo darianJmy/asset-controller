@@ -13,7 +13,7 @@ for (let i = 0; i < count; i++) {
       tecarc: 'x86',
       cpus: '@integer(1, 2)',
       memory: '@integer(1, 32)',
-      'status|1': ['成功', '失败'],
+      'status|1': ['成功', '失败', '未采集'],
     })
   )
 }
