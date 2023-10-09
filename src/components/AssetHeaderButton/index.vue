@@ -5,7 +5,7 @@
     <el-button size="small" type="primary" icon="el-icon-refresh" :loading="refreshLoading" @click="refreshAssets" />
 
     <!-- 新建数据 -->
-    <el-button size="small" type="primary" icon="el-icon-plus" @click="createAssets">新增资产</el-button>
+    <el-button size="small" type="primary" icon="el-icon-plus" @click="addAssetDialog = true">新增资产</el-button>
 
     <!-- 导入 -->
     <el-button size="small" type="primary" icon="el-icon-upload2" @click="importpDialogVisible = true">导入</el-button>
@@ -15,17 +15,17 @@
       @click="exportAssets">导出</el-button>
 
     <!-- 更多功能  -->
-    <el-dropdown trigger="click" @command="dropdownItemClick">
+    <el-dropdown trigger="click" @command="dropdownClick">
       <el-button size="small" type="primary" style="margin-left: 10px;">
         <span>更多操作</span>
         <i class="el-icon-arrow-down el-icon--right"></i>
       </el-button>
       <el-dropdown-menu slot="dropdown">
         <el-dropdown-item :disabled="isItemDisabled">批量编辑</el-dropdown-item>
-        <el-dropdown-item :disabled="isItemDisabled" command="batchDelete">批量删除</el-dropdown-item>
+        <el-dropdown-item :disabled="isItemDisabled" command="delete">批量删除</el-dropdown-item>
         <el-dropdown-item :disabled="isItemDisabled">批量采集</el-dropdown-item>
-        <el-dropdown-item :disabled="isItemDisabled">同步到优维</el-dropdown-item>
-        <el-dropdown-item :disabled="isItemDisabled">批量修改用户名密码</el-dropdown-item>
+        <el-dropdown-item :disabled="isItemDisabled">同步优维</el-dropdown-item>
+        <el-dropdown-item :disabled="isItemDisabled">批量修改</el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
 
@@ -38,15 +38,47 @@
       </template>
     </el-input>
 
+    <!-- 新增 -->
+    <el-dialog title="新增资产" :visible.sync="addAssetDialog" width="600px" height="auto">
+      <el-form ref="addData" :model="addData" :rules="addDataRules">
+        <el-form-item label="资产编号" label-width="80px" prop="asset_number">
+          <el-input v-model="addData.asset_number" style="width: 95%;"></el-input>
+        </el-form-item>
+        <el-form-item label="带外地址" label-width="80px" prop="host_ip">
+          <el-input v-model="addData.host_ip" style="width: 95%;"></el-input>
+        </el-form-item>
+        <el-form-item label="用户名" label-width="80px" prop="username">
+          <el-input v-model="addData.username" style="width: 95%;"></el-input>
+        </el-form-item>
+        <el-form-item label="密码" label-width="80px" prop="password">
+          <el-input v-model="addData.password" :type="passwordVisible ? 'text' : 'password'" style="width: 95%;">
+            <template slot="suffix">
+              <i :class="passwordVisible ? 'el-icon-minus' : 'el-icon-view'" @click="togglePasswordVisibility"></i>
+            </template>
+          </el-input>
+        </el-form-item>
+        <el-form-item label="品牌" label-width="80px">
+          <el-input v-model="addData.brand" style="width: 95%;"></el-input>
+        </el-form-item>
+        <el-form-item label="型号" label-width="80px">
+          <el-input v-model="addData.model_name" style="width: 95%;"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="clearAddData">重置</el-button>
+        <el-button type="primary" @click="addAsset">确 定</el-button>
+      </div>
+    </el-dialog>
+
 
     <!-- 批量删除 -->
-    <el-dialog :visible.sync="deleteGroupDialogVisible" width="30%" height="3%" center>
+    <el-dialog :visible.sync="deleteDialog" width="30%" height="3%" center>
       <div style="text-align: center; padding: 10px;">
         <i class="el-icon-info" style="font-size: 36px; color: red;"></i>
         <p style="font-size: 18px; margin-top: 10px;">您确定要删除 {{ multipleSelection.length }} 条数据吗？</p>
       </div>
       <span slot="footer" style="text-align: center;">
-        <el-button @click="deleteGroupDialogVisible = false" size="small">取消</el-button>
+        <el-button @click="closeDeleteDialog" size="small">取消</el-button>
         <el-button type="danger" size="small" @click="confirmBatchDelete">确定</el-button>
       </span>
     </el-dialog>
@@ -54,7 +86,7 @@
     <!-- 导入 -->
     <el-dialog :visible.sync="importpDialogVisible" width="30%" center>
       <div style="text-align: center; padding: 5px;">
-        <el-upload class="upload-demo" drag action="https://jsonplaceholder.typicode.com/posts/" multiple ref="upload"
+        <el-upload class="upload-demo" drag action="http://10.250.49.78:8081/api/assetconfig/upload" multiple ref="upload"
           :on-remove="handleRemove" :file-list="fileList" :auto-upload="false" :before-upload="beforeUpload">
           <i class="el-icon-upload"></i>
           <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
@@ -71,14 +103,45 @@
 </template>
 
 <script>
+import { createAsset, deleteAsset } from '@/api/physical'
 export default {
   data() {
     return {
       isItemDisabled: true,
-      deleteGroupDialogVisible: false,
+      deleteDialog: false,
       importpDialogVisible: false,
       exportLoading: false,
-      fileList: []
+      fileList: [],
+      addAssetDialog: false,
+      addData: {
+        asset_number: '',
+        host_ip: '',
+        username: '',
+        password: '',
+        brand: '',
+        model_name: '',
+      },
+      addDataRules: {
+        asset_number: [
+          { required: true, message: '请输入资产编号', trigger: 'blur' },
+        ],
+        host_ip: [
+          { required: true, message: '请输入主机IP', trigger: 'blur' },
+          { validator: this.validateIPAddress, trigger: 'blur' }
+        ],
+        username: [
+          { required: true, message: '请输入用户名', trigger: 'blur' },
+        ],
+        password: [
+          { required: true, message: '请输入密码', trigger: 'blur' },
+        ],
+      },
+      passwordVisible: false,
+      deleteData: {
+        ids: {
+          ids: []
+        }
+      }
     }
   },
   props: {
@@ -104,13 +167,52 @@ export default {
     refreshAssets() {
       this.$emit('refresh-assets')
     },
-    createAssets() {
-      this.$router.push('/physical/create')
+    closeDeleteDialog() {
+      this.deleteDialog = false
+    },
+    openDeleteDialog() {
+      this.deleteDialog = true
+    },
+    clearAddData() {
+      this.addData.asset_number = '';
+      this.addData.host_ip = '';
+      this.addData.username = '';
+      this.addData.password = '';
+      this.addData.brand = '';
+      this.addData.model_name = '';
+    },
+    validateIPAddress(rule, value, callback) {
+      const ipPattern = /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/;
+      if (!ipPattern.test(value)) {
+        callback(new Error('请输入有效的IP地址'));
+      } else {
+        callback();
+      }
+    },
+    addAsset() {
+      this.$refs.addData.validate((valid) => {
+        if (valid) {
+          this.addAssetDialog = false
+          createAsset(this.addData).then(response => {
+            if (response.code == 0) {
+              this.$message({ message: '新建数据成功', type: 'success' });
+              this.refreshAssets()
+              this.clearAddData()
+            } else {
+              this.$message({ message: '新建数据失败', type: 'error' });
+              this.clearAddData()
+            }
+          })
+        }
+      });
+    },
+    togglePasswordVisibility() {
+      this.passwordVisible = !this.passwordVisible;
     },
     exportTemplate() {
       import('@/vendor/Export2Excel').then(excel => {
-        const tHeader = ['资产编号', '带外IP', '用户名', '密码']
-        const data = [['xxxx', '192.168.1.1', 'admin', 'admin']]
+        const tHeader = ['资产编号', '采集主机IP', '用户名', '密码', '厂商', '品牌', '型号']
+        const data = [['xxxx', '192.168.1.1', 'admin', 'admin', 'FiberHome', 'R2280 V4', 'FG42X V1-001']]
         excel.export_json_to_excel({
           header: tHeader,
           data,
@@ -164,9 +266,9 @@ export default {
         }
       }))
     },
-    dropdownItemClick(command) {
-      if (command == 'batchDelete') {
-        this.deleteGroupDialogVisible = true
+    dropdownClick(command) {
+      if (command == 'delete') {
+        this.openDeleteDialog()
       }
     },
     confirmBatchDelete() {
@@ -174,16 +276,33 @@ export default {
       this.multipleSelection.forEach(selectedItem => {
         const index = this.tableData.indexOf(selectedItem);
         if (index !== -1) {
-          this.tableData.splice(index, 1); // 从表格数据中删除选中的行
+          const selectedData = this.tableData[index];
+          this.deleteData.ids.ids.push(selectedData.id)
+          this.tableData.splice(index, 1);
         }
       });
-      this.deleteGroupDialogVisible = false
+      deleteAsset(this.deleteData.ids).then(response => {
+        if (response.code == 0) {
+          this.closeDeleteDialog()
+          this.$message({ message: '删除成功', type: 'success' });
+          this.clearDeleteData()
+          this.tableData.splice(this.deleteIndex, 1)
+        } else {
+          this.closeDeleteDialog()
+          this.$message({ message: '删除失败', type: 'error' });
+          this.clearDeleteData()
+        }
+      })
+      this.closeDeleteDialog()
     },
+    clearDeleteData() {
+      this.deleteData.ids.ids = []
+    }
   }
 }
 </script>
 
-<style scoped>
+<style>
 .el-input .custom-button {
   border-radius: 0 4px 4px 0;
   background-color: #409eff;

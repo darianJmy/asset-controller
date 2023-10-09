@@ -16,7 +16,7 @@
 import AssetHeaderButton from '@/components/AssetHeaderButton'
 import AssetTable from '@/components/AssetTable'
 import Pagination from '@/components/Pagination'
-import { getPhysicalList } from '@/api/physical'
+import { getAssetList } from '@/api/physical'
 export default {
   components: { AssetHeaderButton, AssetTable, Pagination },
   data() {
@@ -28,8 +28,6 @@ export default {
       listQuery: {
         page: 1,
         limit: 20,
-        host: undefined,
-        sort: '+status'
       },
       multipleSelection: [],
     }
@@ -41,13 +39,11 @@ export default {
     assetList() {
       this.refreshLoading = true
       this.listLoading = true
-      getPhysicalList(this.listQuery).then(response => {
-        this.tableData = response.data.items
+      getAssetList(this.listQuery).then(response => {
+        this.tableData = response.data.data
         this.total = response.data.total
-        setTimeout(() => {
-          this.refreshLoading = false
-          this.listLoading = false
-        }, 1.5 * 1000)
+        this.refreshLoading = false
+        this.listLoading = false
       })
     },
     handleDataUpdated(data) {
@@ -55,5 +51,4 @@ export default {
     }
   },
 }
-
 </script>
