@@ -26,7 +26,7 @@
           {{ scope.row.brand }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="型号" width="100">
+      <el-table-column align="center" label="型号" width="130">
         <template slot-scope="scope">
           {{ scope.row.model_name }}
         </template>
@@ -38,9 +38,9 @@
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="采集时间" width="140" prop="status">
+      <el-table-column align="center" label="采集时间" width="180" prop="status">
         <template slot-scope="scope">
-          {{ scope.row.end_time }}
+          {{ scope.row.last_collection }}
         </template>
       </el-table-column>
       <el-table-column fixed="right" label="操作">
@@ -159,7 +159,7 @@ export default {
     },
     statusTagType(status) {
       switch (status) {
-        case '成功':
+        case '采集成功':
           return 'success';
         case '未采集':
           return 'info';
