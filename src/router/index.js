@@ -60,6 +60,7 @@ export const constantRoutes = [
       {
         path: 'index',
         name: 'Grafana',
+        hidden: true,
         component: () => import('@/views/grafana/index'),
         meta: { title: 'Grafana', icon: 'monitor' }
       }

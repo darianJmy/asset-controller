@@ -1,24 +1,25 @@
 <template>
   <div class="app-container">
-    <asset-header-button :tableData="tableData" @refresh-assets="assetList" :refreshLoading="refreshLoading"
-      :multipleSelection="multipleSelection"></asset-header-button>
+
+    <physical-header></physical-header>
 
     <asset-table :tableData="tableData" :listLoading="listLoading" :listQuery="listQuery"
       @data-updated="handleDataUpdated"></asset-table>
 
-    <pagination v-show="total > 0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit"
-      @pagination="assetList" />
+    <pagination v-show="total > 0" :multipleSelection="multipleSelection" :page.sync="listQuery.page"
+      :limit.sync="listQuery.limit" @pagination="assetList" />
 
   </div>
 </template>
 
 <script>
+import PhysicalHeader from '@/components/PhysicalHeader'
 import AssetHeaderButton from '@/components/AssetHeaderButton'
 import AssetTable from '@/components/AssetTable'
 import Pagination from '@/components/Pagination'
 import { getAssetList } from '@/api/physical'
 export default {
-  components: { AssetHeaderButton, AssetTable, Pagination },
+  components: { PhysicalHeader, AssetHeaderButton, AssetTable, Pagination },
   data() {
     return {
       refreshLoading: false,
@@ -30,6 +31,7 @@ export default {
         limit: 20,
       },
       multipleSelection: [],
+      data: null
     }
   },
   created() {
@@ -40,15 +42,15 @@ export default {
       this.refreshLoading = true
       this.listLoading = true
       getAssetList(this.listQuery).then(response => {
-        this.tableData = response.data.data
-        this.total = response.data.total
+        this.tableData = response.data
+        this.total = response.count
         this.refreshLoading = false
         this.listLoading = false
       })
     },
     handleDataUpdated(data) {
       this.multipleSelection = data
-    }
+    },
   },
 }
 </script>
