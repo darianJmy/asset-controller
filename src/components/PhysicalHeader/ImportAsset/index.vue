@@ -3,7 +3,7 @@
     <el-button size="small" type="primary" icon="el-icon-upload2" @click="importAssetDialog = true">导入</el-button>
 
     <!-- 导入 -->
-    <el-dialog :visible.sync="importAssetDialog" width="30%" center>
+    <el-dialog :visible.sync="importAssetDialog" width="30%" center @close="clearFileList">
       <div style="text-align: center; padding: 5px;">
         <el-upload drag action="http://10.250.49.78:8081/api/assetconfig/upload" multiple ref="upload"
           :on-remove="handleRemove" :file-list="fileList" :auto-upload="false" :before-upload="beforeUpload">
@@ -22,7 +22,6 @@
 </template>
 
 <script>
-import { getAssetList } from '@/api/physical'
 export default {
   data() {
     return {
@@ -47,8 +46,8 @@ export default {
     },
     exportTemplate() {
       import('@/vendor/Export2Excel').then(excel => {
-        const tHeader = ['资产编号', '采集主机IP', '用户名', '密码', '厂商', '品牌', '型号']
-        const data = [['xxxx', '192.168.1.1', 'admin', 'admin', 'FiberHome', 'R2280 V4', 'FG42X V1-001']]
+        const tHeader = ['资产编号', '带外地址', '用户名', '密码', '厂商']
+        const data = [['xxxx', '192.168.1.1', 'admin', 'admin', 'FiberHome']]
         excel.export_json_to_excel({
           header: tHeader,
           data,
@@ -60,18 +59,13 @@ export default {
     },
     handleUpload() {
       this.$refs.upload.submit()
+      setTimeout(() => {
+        this.$emit('taskCompleted');
+      }, 500)
       this.importAssetDialog = false
-      this.refreshAssets()
     },
-    refreshAssets() {
-      const listQuery = {
-        page: 1,
-        limit: 20
-      }
-      getAssetList(listQuery).then(response => {
-        const data = response.data
-        this.$emit("import-event", data);
-      })
+    clearFileList() {
+      this.fileList = []
     }
   }
 }

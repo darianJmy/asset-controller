@@ -1,9 +1,9 @@
 <template>
   <div>
     <!-- 搜索 -->
-    <el-input size="small" placeholder="模糊搜索">
+    <el-input size="small" v-model="searchText" placeholder="模糊搜索" @keyup.native.enter="search">
       <template #append>
-        <el-button size="small" class="custom-button" type="primary" icon="el-icon-search">
+        <el-button size="small" icon="el-icon-search" @click="search">
           搜索
         </el-button>
       </template>
@@ -12,4 +12,18 @@
 </template>
 
 <script>
+
+export default {
+  data() {
+    return {
+      searchText: ''
+    }
+  },
+
+  methods: {
+    search() {
+      this.$emit('searchText', this.searchText);
+    }
+  }
+}
 </script>

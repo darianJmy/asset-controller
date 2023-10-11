@@ -4,7 +4,7 @@
     <el-button size="small" type="primary" icon="el-icon-plus" @click="addAssetDialog = true">新增资产</el-button>
 
     <!-- 新增 -->
-    <el-dialog title="新增资产" :visible.sync="addAssetDialog" width="600px" height="auto" :before-close="closeAddDialog">
+    <el-dialog title="新增资产" :visible.sync="addAssetDialog" width="600px" height="auto" @close="clearAddData">
       <el-form ref="addData" :model="addData" :rules="addDataRules">
         <el-form-item label="资产编号" label-width="80px" prop="asset_number">
           <el-input v-model="addData.asset_number" style="width: 95%;"></el-input>
@@ -25,20 +25,17 @@
         <el-form-item label="厂商" label-width="80px">
           <el-input v-model="addData.firm" style="width: 95%;"></el-input>
         </el-form-item>
-        <el-form-item label="型号" label-width="80px">
-          <el-input v-model="addData.model_name" style="width: 95%;"></el-input>
-        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="clearAddData">重置</el-button>
-        <el-button type="primary" @click="addAsset">确 定</el-button>
+        <el-button @click="addAssetDialog = false">取消</el-button>
+        <el-button type="primary" @click="create">确 定</el-button>
       </div>
     </el-dialog>
   </div>
 </template>
 
 <script>
-import { getAssetList, createAsset } from '@/api/physical'
+import { createAsset } from '@/api/physical'
 export default {
   data() {
     return {
@@ -49,7 +46,6 @@ export default {
         username: '',
         password: '',
         firm: '',
-        model_name: '',
       },
       addDataRules: {
         asset_number: [
@@ -81,17 +77,16 @@ export default {
         callback()
       }
     },
-    addAsset() {
+    create() {
       this.$refs.addData.validate(async (valid) => {
         if (valid) {
-          this.addAssetDialog = false
           await createAsset(this.addData).then(response => {
             this.$message({ message: '新建数据成功', type: 'success' })
-            this.clearAddData()
-            this.refreshAssets()
+            this.$emit('taskCompleted');
           }).catch(error => {
-            this.clearAddData()
+            this.$message({ message: '新建数据失败', type: 'error' })
           })
+          this.addAssetDialog = false
         }
       });
     },
@@ -102,23 +97,8 @@ export default {
         username: '',
         password: '',
         firm: '',
-        model_name: ''
       };
     },
-    refreshAssets() {
-      const listQuery = {
-        page: 1,
-        limit: 20
-      }
-      getAssetList(listQuery).then(response => {
-        const data = response.data
-        this.$emit("add-event", data);
-      })
-    },
-    closeAddDialog() {
-      this.clearAddData()
-      this.addAssetDialog = false
-    }
   },
 }
 

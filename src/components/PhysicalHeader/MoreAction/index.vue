@@ -7,11 +7,9 @@
         <i class="el-icon-arrow-down el-icon--right"></i>
       </el-button>
       <el-dropdown-menu slot="dropdown">
-        <el-dropdown-item :disabled="isItemDisabled">批量编辑</el-dropdown-item>
         <el-dropdown-item :disabled="isItemDisabled" command="delete">批量删除</el-dropdown-item>
-        <el-dropdown-item :disabled="isItemDisabled">批量采集</el-dropdown-item>
-        <el-dropdown-item>同步优维</el-dropdown-item>
-        <el-dropdown-item :disabled="isItemDisabled">批量修改</el-dropdown-item>
+        <el-dropdown-item :disabled="isItemDisabled" command="collector">批量采集</el-dropdown-item>
+        <el-dropdown-item command="sync">同步优维</el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
 
@@ -30,13 +28,12 @@
 </template>
 
 <script>
+import { deleteAsset, collectorAsset } from '@/api/physical'
 export default {
   data() {
     return {
       isItemDisabled: true,
-      ids: {
-        ids: []
-      }
+      deleteDialog: false,
     }
   },
   props: {
@@ -48,7 +45,6 @@ export default {
   watch: {
     multipleSelection: {
       handler(newArray) {
-        console.log(this.multipleSelection)
         this.isItemDisabled = newArray.length === 0;
       },
       deep: true,
@@ -56,24 +52,45 @@ export default {
   },
   methods: {
     dropdownClick(command) {
-      if (command == 'delete') {
-        this.deleteDialog = true
+      switch (command) {
+        case 'delete':
+          this.deleteDialog = true
+          break
+        case 'collector':
+          this.thisFirmBatchCollector()
+          break
+        case 'sync':
+          this.$message({ message: '功能没做呢~', type: 'warning' });
       }
     },
     confirmBatchDelete() {
-      // 遍历选中的行，执行删除操作
-      this.multipleSelection.forEach(selectedItem => {
-        this.ids.ids.push(multipleSelection.id)
+      const ids = {
+        ids: []
       }
-      );
-      deleteAsset(this.ids).then(response => {
-        this.closeDeleteDialog()
-        this.$message({ message: '删除成功', type: 'success' });
-      }).catch(error => {
-        this.ids.ids = []
+      this.multipleSelection.forEach(selectedItem => {
+        ids.ids.push(selectedItem.id)
       })
-      this.closeDeleteDialog()
+      deleteAsset(ids).then(response => {
+        this.$message({ message: '删除成功', type: 'success' })
+        this.$emit('taskCompleted');
+      }).catch(error => {
+        this.$message({ message: '删除失败', type: 'success' })
+      })
+      this.deleteDialog = false
     },
+    thisFirmBatchCollector() {
+      const ids = {
+        ids: []
+      }
+      this.multipleSelection.forEach(selectedItem => {
+        ids.ids.push(selectedItem.id)
+      })
+      collectorAsset(ids).then(response => {
+        this.$message({ message: '批量采集成功', type: 'success' });
+      }).catch(error => {
+        this.$message({ message: '批量采集失败', type: 'error' });
+      })
+    }
   }
 }
 

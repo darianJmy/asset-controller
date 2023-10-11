@@ -84,7 +84,7 @@ export const constantRoutes = [
       },
       {
         path: 'table',
-        component: () => import('@/views/physical/assetTable/index'),
+        component: () => import('@/views/physical/index'),
         name: 'Table',
         meta: { title: '服务器资产', icon: 'table' },
       },
