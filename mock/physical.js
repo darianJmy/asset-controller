@@ -13,7 +13,7 @@ for (let i = 0; i < count; i++) {
       tecarc: 'x86',
       cpus: '@integer(1, 2)',
       memory: '@integer(1, 32)',
-      'status|1': ['成功', '失败', '未采集'],
+      'status|1': ['成功', '失败', '未采集']
     })
   )
 }
@@ -33,13 +33,13 @@ module.exports = [
         mockList = mockList.sort((a, b) => {
           // 比较函数，根据状态字段排序（成功在前，失败在后）
           if (a.status === '成功' && b.status === '失败') {
-            return -1; // a 在 b 前面
+            return -1 // a 在 b 前面
           } else if (a.status === '失败' && b.status === '成功') {
-            return 1; // b 在 a 前面
+            return 1 // b 在 a 前面
           } else {
-            return 0; // 状态相同，保持原顺序
+            return 0 // 状态相同，保持原顺序
           }
-        });
+        })
       }
 
       const pageList = mockList.filter((item, index) => index < limit * page && index >= limit * (page - 1))

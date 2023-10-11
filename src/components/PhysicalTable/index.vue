@@ -22,7 +22,7 @@
     </el-table-column>
     <el-table-column align="center" label="厂商" width="120">
       <template slot-scope="scope">
-        {{ scope.row.brand }}
+        {{ scope.row.firm }}
       </template>
     </el-table-column>
     <el-table-column align="center" label="CPU" width="130">
@@ -96,7 +96,10 @@ export default {
     },
     assetList(data) {
       this.tableData = data
-    }
+    },
+    gotoDetailPage(host) {
+      this.$router.push({ path: '/physical/detail', query: { id: host } })
+    },
   }
 }
 </script>

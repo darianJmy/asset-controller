@@ -6,7 +6,6 @@ Vue.use(Router)
 /* Layout */
 import Layout from '@/layout'
 
-
 /**
  * Note: sub-menu only appear when route children.length >= 1
  * Detail see: https://panjiachen.github.io/vue-element-admin-site/guide/essentials/router-and-nav.html
@@ -72,7 +71,7 @@ export const constantRoutes = [
     redirect: '/physical/table',
     name: 'Physical',
     meta: {
-      title: '物理服务器',
+      title: '物理服务器'
     },
     children: [
       {
@@ -86,8 +85,8 @@ export const constantRoutes = [
         path: 'table',
         component: () => import('@/views/physical/index'),
         name: 'Table',
-        meta: { title: '服务器资产', icon: 'table' },
-      },
+        meta: { title: '服务器资产', icon: 'table' }
+      }
     ]
   },
   // 404 page must be placed at the end !!!

@@ -6,7 +6,7 @@ const state = {
   showSettings: showSettings,
   fixedHeader: fixedHeader,
   sidebarLogo: sidebarLogo,
-  tagsView: tagsView,
+  tagsView: tagsView
 }
 
 const mutations = {
