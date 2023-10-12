@@ -47,12 +47,12 @@ export default {
           this.total = response.count
           this.refreshLoading = false
           this.listLoading = false
-          this.$message({ message: '加载成功', type: 'success' })
+          this.$message({ showClose: true, message: '加载成功', type: 'success' })
         }, 500)
       }).catch(error => {
         this.refreshLoading = false
         this.listLoading = false
-        this.$message({ message: '加载失败', type: 'error' })
+        this.$message({ showClose: true, message: '加载失败', type: 'error' })
       })
     },
     refreshassetList() {
@@ -68,12 +68,12 @@ export default {
           this.total = response.count
           this.refreshLoading = false
           this.listLoading = false
-          this.$message({ message: '刷新成功', type: 'success' })
+          this.$message({ showClose: true, message: '刷新成功', type: 'success' })
         }, 500)
       }).catch(error => {
         this.refreshLoading = false
         this.listLoading = false
-        this.$message({ message: '刷新失败', type: 'error' })
+        this.$message({ showClose: true, message: '刷新失败', type: 'error' })
       })
     },
     watchMultipleSelection(data) {
@@ -89,12 +89,12 @@ export default {
           this.total = response.count
           this.refreshLoading = false
           this.listLoading = false
-          this.$message({ message: '刷新成功', type: 'success' })
+          this.$message({ showClose: true, message: '刷新成功', type: 'success' })
         }, 500)
       }).catch(error => {
         this.refreshLoading = false
         this.listLoading = false
-        this.$message({ message: '刷新失败', type: 'error' })
+        this.$message({ showClose: true, message: '刷新失败', type: 'error' })
       })
     }
   },

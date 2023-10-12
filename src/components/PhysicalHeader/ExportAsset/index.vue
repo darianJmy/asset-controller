@@ -23,9 +23,10 @@ export default {
           document.body.appendChild(link);
           link.click();
           window.URL.revokeObjectURL(url);
+          this.$message({ showClose: true, message: '下载文件成功', type: 'success' })
         })
         .catch(error => {
-          this.$message({ message: '下载文件失败', type: 'error' })
+          this.$message({ showClose: true, message: '下载文件失败', type: 'error' })
         });
     }
   }

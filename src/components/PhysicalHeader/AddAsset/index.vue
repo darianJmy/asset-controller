@@ -81,10 +81,10 @@ export default {
       this.$refs.addData.validate(async (valid) => {
         if (valid) {
           await createAsset(this.addData).then(response => {
-            this.$message({ message: '新建数据成功', type: 'success' })
+            this.$message({ showClose: true, message: '新建数据成功', type: 'success' })
             this.$emit('taskCompleted');
           }).catch(error => {
-            this.$message({ message: '新建数据失败', type: 'error' })
+            this.$message({ showClose: true, message: '新建数据失败', type: 'error' })
           })
           this.addAssetDialog = false
         }

@@ -36,10 +36,10 @@ export default {
         ids: [this.id]
       }
       deleteAsset(ids).then(response => {
-        this.$message({ message: '删除成功', type: 'success' });
+        this.$message({ showClose: true, message: '删除成功', type: 'success' });
         this.$emit('taskCompleted');
       }).catch(error => {
-        this.$message({ message: '删除失败', type: 'error' });
+        this.$message({ showClose: true, message: '删除失败', type: 'error' });
       })
 
     },

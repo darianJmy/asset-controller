@@ -1,9 +1,10 @@
 <template>
   <div class="app-container">
     <el-descriptions title="详细信息" direction="vertical" :column="7" border>
-      <el-descriptions-item label="带外IP">{{ detailData.host }}</el-descriptions-item>
-      <el-descriptions-item label="资产编号">{{ detailData.serial_number }}</el-descriptions-item>
-      <el-descriptions-item label="CPU数量" :span="5">{{ detailData.cpu_number }}</el-descriptions-item>
+      <el-descriptions-item label="带外IP" :span="1">{{ detailData.host }}</el-descriptions-item>
+      <el-descriptions-item label="主机名" :span="0">测试</el-descriptions-item>
+      <el-descriptions-item label="资产编号" :span="2">{{ detailData.serial_number }}</el-descriptions-item>
+      <el-descriptions-item label="CPU数量">{{ detailData.cpu_number }}</el-descriptions-item>
       <el-descriptions-item label="CPU内核">
         <el-tag size="small">{{ detailData.cpu_cores }}</el-tag>
       </el-descriptions-item>
@@ -19,7 +20,6 @@
       <el-descriptions-item label="采集状态"></el-descriptions-item>
       <el-descriptions-item label="UUID">{{ detailData.uuid }}</el-descriptions-item>
       <el-descriptions-item label="序列号" :span="2"></el-descriptions-item>
-      <el-descriptions-item label="主机名">{{ detailData.memory_capacity_GiB }}</el-descriptions-item>
     </el-descriptions>
   </div>
 </template>

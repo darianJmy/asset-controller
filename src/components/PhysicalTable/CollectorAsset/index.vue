@@ -22,9 +22,9 @@ export default {
         ids: [this.id]
       }
       collectorAsset(ids).then(response => {
-        this.$message({ message: '执行成功', type: 'success' });
+        this.$message({ showClose: true, message: '执行成功', type: 'success' });
       }).catch(error => {
-        this.$message({ message: '执行失败', type: 'error' });
+        this.$message({ showClose: true, message: '执行失败', type: 'error' });
       })
     }
   }

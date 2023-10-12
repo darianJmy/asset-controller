@@ -60,7 +60,7 @@ export default {
           this.thisFirmBatchCollector()
           break
         case 'sync':
-          this.$message({ message: '功能没做呢~', type: 'warning' });
+          this.$message({ showClose: true, message: '功能没做呢~', type: 'warning' });
       }
     },
     confirmBatchDelete() {
@@ -71,10 +71,10 @@ export default {
         ids.ids.push(selectedItem.id)
       })
       deleteAsset(ids).then(response => {
-        this.$message({ message: '删除成功', type: 'success' })
+        this.$message({ showClose: true, message: '删除成功', type: 'success' })
         this.$emit('taskCompleted');
       }).catch(error => {
-        this.$message({ message: '删除失败', type: 'success' })
+        this.$message({ showClose: true, message: '删除失败', type: 'success' })
       })
       this.deleteDialog = false
     },
@@ -86,9 +86,9 @@ export default {
         ids.ids.push(selectedItem.id)
       })
       collectorAsset(ids).then(response => {
-        this.$message({ message: '批量采集成功', type: 'success' });
+        this.$message({ showClose: true, message: '执行成功', type: 'success' });
       }).catch(error => {
-        this.$message({ message: '批量采集失败', type: 'error' });
+        this.$message({ showClose: true, message: '执行失败', type: 'error' });
       })
     }
   }
