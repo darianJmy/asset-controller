@@ -42,7 +42,7 @@
         </el-tag>
       </template>
     </el-table-column>
-    <el-table-column align="center" label="采集时间" width="180" prop="status">
+    <el-table-column align="center" label="采集时间" width="180" prop="last_collection" sortable>
       <template slot-scope="scope">
         {{ scope.row.last_collection }}
       </template>
@@ -51,6 +51,7 @@
       <!-- 按钮 -->
       <template slot-scope="scope">
         <span class="child-wrapper"><collector-asset :id="scope.row.id" /></span>
+        <span class="child-wrapper"><change-asset :data="scope.row" /></span>
         <span class="child-wrapper"><delete-asset :id="scope.row.id" :host="scope.row.host_ip"
             @taskCompleted="taskCompleted" /></span>
       </template>
@@ -60,11 +61,13 @@
 
 <script>
 import CollectorAsset from './CollectorAsset'
+import ChangeAsset from './ChangeAsset'
 import DeleteAsset from './DeleteAsset'
 export default {
-  components: { CollectorAsset, DeleteAsset },
+  components: { CollectorAsset, ChangeAsset, DeleteAsset },
   data() {
-    return {}
+    return {
+    }
   },
   props: {
     tableData: {

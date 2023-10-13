@@ -25,6 +25,24 @@ export function createAsset(data) {
   })
 }
 
+export function updateAsset(data) {
+  return physical({
+    url: '/assetconfig/update',
+    method: 'post',
+    data: data
+  })
+}
+
+export function exportAsset() {
+  return physical({
+    url: '/assetconfig/export',
+    method: 'get',
+    headers: {
+      'Accept': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    }
+  })
+}
+
 export function deleteAsset(data) {
   return physical({
     url: '/assetconfig/delete',
@@ -46,5 +64,16 @@ export function detailAsset(query) {
     url: 'ipmi/info/detail',
     method: 'get',
     params: query
+  })
+}
+
+export function uploadRack(data) {
+  return physical({
+    url: '/cabinet/convert',
+    headers: {
+      'Accept': 'application/zip'
+    },
+    method: 'post',
+    data: data
   })
 }

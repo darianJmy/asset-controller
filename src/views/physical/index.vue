@@ -43,6 +43,7 @@ export default {
       this.listLoading = true
       getAssetList(this.listQuery).then(response => {
         setTimeout(() => {
+          console.log(response)
           this.tableData = response.data
           this.total = response.count
           this.refreshLoading = false

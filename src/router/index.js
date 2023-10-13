@@ -89,6 +89,18 @@ export const constantRoutes = [
       }
     ]
   },
+  {
+    path: '/rack',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: '机柜图',
+        component: () => import('@/views/rack/index'),
+        meta: { title: '机柜图', icon: 'excel' }
+      }
+    ]
+  },
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
 ]

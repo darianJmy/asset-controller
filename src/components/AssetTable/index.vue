@@ -151,7 +151,6 @@ export default {
   methods: {
     selectionChange(val) {
       this.multipleSelection = val;
-      console.log(this.multipleSelection)
       this.$emit('data-updated', this.multipleSelection);
     },
     clearMultipleSelection() {
