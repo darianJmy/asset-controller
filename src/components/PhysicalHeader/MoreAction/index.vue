@@ -95,7 +95,7 @@ export default {
           this.deleteDialog = true
           break
         case 'collector':
-          this.thisFirmBatchCollector()
+          this.firmBatchCollector()
           break
         case 'change':
           this.changeDialog = true
@@ -119,7 +119,7 @@ export default {
       })
       this.deleteDialog = false
     },
-    thisFirmBatchCollector() {
+    firmBatchCollector() {
       const ids = {
         ids: []
       }

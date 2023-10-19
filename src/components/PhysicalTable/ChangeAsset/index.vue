@@ -72,13 +72,7 @@ export default {
         this.changeData.firm = this.data.firm
       }
       const data = {
-        asset_number: this.changeData.asset_number,
-        brand: this.data.brand,
-        collection_status: this.data.collection_status,
-        firm: this.changeData.firm,
-        host_ip: this.data.host_ip,
         id: this.data.id,
-        model_name: this.data.model_name,
         password: this.changeData.password,
         username: this.changeData.username
       }

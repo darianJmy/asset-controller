@@ -54,6 +54,7 @@
         <span class="child-wrapper"><change-asset :data="scope.row" /></span>
         <span class="child-wrapper"><delete-asset :id="scope.row.id" :host="scope.row.host_ip"
             @taskCompleted="taskCompleted" /></span>
+        <span class="child-wrapper"><log-asset :log="scope.row.collection_log" /></span>
       </template>
     </el-table-column>
   </el-table>
@@ -63,8 +64,9 @@
 import CollectorAsset from './CollectorAsset'
 import ChangeAsset from './ChangeAsset'
 import DeleteAsset from './DeleteAsset'
+import LogAsset from './LogAsset'
 export default {
-  components: { CollectorAsset, ChangeAsset, DeleteAsset },
+  components: { CollectorAsset, ChangeAsset, DeleteAsset, LogAsset },
   data() {
     return {
     }
@@ -91,7 +93,7 @@ export default {
       switch (status) {
         case '采集成功':
           return 'success';
-        case '未采集':
+        case '采集中':
           return 'info';
         default:
           return 'danger';
