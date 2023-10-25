@@ -25,17 +25,22 @@
         {{ scope.row.firm }}
       </template>
     </el-table-column>
-    <el-table-column align="center" label="CPU" width="130">
+    <el-table-column align="center" label="CPU" width="70">
       <template slot-scope="scope">
         {{ scope.row.info.cpu_cores }}
       </template>
     </el-table-column>
-    <el-table-column align="center" label="内存" width="130">
+    <el-table-column align="center" label="内存" width="70">
       <template slot-scope="scope">
         {{ scope.row.info.memory_capacity_GiB }}
       </template>
     </el-table-column>
-    <el-table-column align="center" label="状态" width="140" prop="status">
+    <el-table-column align="center" label="节点类型" width="150">
+      <template slot-scope="scope">
+        {{ scope.row.node_type }}
+      </template>
+    </el-table-column>
+    <el-table-column align="center" label="状态" width="90" prop="status">
       <template slot-scope="scope">
         <el-tag v-if="scope.row.collection_status" :type="statusTagType(scope.row.collection_status)" size="small">
           {{ scope.row.collection_status }}

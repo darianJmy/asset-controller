@@ -22,6 +22,9 @@
             </template>
           </el-input>
         </el-form-item>
+        <el-form-item label="节点类型" label-width="80px">
+          <el-input v-model="addData.node_type" style="width: 95%;"></el-input>
+        </el-form-item>
         <el-form-item label="厂商" label-width="80px">
           <el-input v-model="addData.firm" style="width: 95%;"></el-input>
         </el-form-item>
@@ -45,6 +48,7 @@ export default {
         host_ip: '',
         username: '',
         password: '',
+        node_type: '',
         firm: '',
       },
       addDataRules: {
@@ -96,6 +100,7 @@ export default {
         host_ip: '',
         username: '',
         password: '',
+        node_type: '',
         firm: '',
       };
     },

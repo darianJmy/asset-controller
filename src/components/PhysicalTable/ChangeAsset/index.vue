@@ -24,6 +24,9 @@
             </template>
           </el-input>
         </el-form-item>
+        <el-form-item label="节点类型" label-width="80px">
+          <el-input v-model="changeData.nodeType" style="width: 95%;"></el-input>
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="changeDialog = false">取消</el-button>
@@ -45,7 +48,8 @@ export default {
         asset_number: null,
         firm: null,
         password: null,
-        username: null
+        username: null,
+        node_type: null
       },
       changeDataRules: {
         username: [
@@ -71,6 +75,9 @@ export default {
       if (this.changeData.firm === null) {
         this.changeData.firm = this.data.firm
       }
+      if (this.changeData.node_type === null) {
+        this.changeData.node_type = this.data.node_type
+      }
       const data = {
         id: this.data.id,
         password: this.changeData.password,
@@ -88,7 +95,8 @@ export default {
         asset_number: null,
         firm: null,
         password: null,
-        username: null
+        username: null,
+        node_type: null
       }
     }
   }
